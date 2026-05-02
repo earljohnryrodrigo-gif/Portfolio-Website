@@ -1,4 +1,4 @@
-/* ===== GLOBAL RESET & VARIABLES ===== */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -29,7 +29,7 @@ body {
   flex-direction: column;
 }
 
-/* ===== HEADER ===== */
+
 .header {
   position: relative;
   height: 180px;
@@ -42,7 +42,7 @@ body {
 .header-bg {
   position: absolute;
   inset: 0;
-  background-image: url('images/backround.jpg');
+  background-image: url('download.jpg');
   background-size: cover;
   background-position: center;
   filter: blur(4px) brightness(0.45);
@@ -74,7 +74,7 @@ body {
   text-transform: uppercase;
 }
 
-/* ===== NAVBAR ===== */
+
 .navbar {
   background: var(--primary);
   display: flex;
@@ -118,7 +118,7 @@ body {
   color: var(--accent);
 }
 
-/* ===== MAIN FRAME ===== */
+
 .main-content {
   flex: 1;
   padding: 20px;
@@ -134,7 +134,7 @@ body {
   animation: fadeUp 0.5s ease both;
 }
 
-/* ===== FOOTER ===== */
+
 .footer {
   background: var(--mid);
   color: var(--cream);
@@ -149,7 +149,7 @@ body {
   font-size: 13px;
 }
 
-/* ===== ANIMATIONS ===== */
+
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-20px); }
   to   { opacity: 1; transform: translateY(0); }

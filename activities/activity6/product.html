@@ -5,24 +5,378 @@
   <title>Products - Earl's Snack House</title>
   <link rel="stylesheet" href="product.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .cart-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 99px;
+      padding: 14px 22px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(214,43,43,0.45);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+      z-index: 999;
+      animation: popIn 0.4s ease both;
+    }
+    .cart-fab:hover {
+      background: #A81F1F;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(214,43,43,0.5);
+    }
+    .cart-fab .cart-count {
+      background: var(--accent);
+      color: #5A2020;
+      font-size: 12px;
+      font-weight: 900;
+      border-radius: 99px;
+      padding: 2px 8px;
+      min-width: 22px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .cart-fab.bump .cart-count {
+      animation: bump 0.3s ease;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .qty-btn {
+      background: #fff;
+      color: var(--primary);
+      border: none;
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      font-family: 'Nunito', sans-serif;
+    }
+    .qty-btn:hover { background: var(--primary); color: #fff; }
+    .qty-btn:active { transform: scale(0.92); }
+    .qty-display {
+      width: 34px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--dark);
+      background: #FFF8EE;
+      border: none;
+      border-left: 1.5px solid var(--border);
+      border-right: 1.5px solid var(--border);
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .card-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1.5px solid var(--border);
+    }
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .add-btn {
+      flex: 1;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .add-btn:hover {
+      background: #A81F1F;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(214,43,43,0.35);
+    }
+    .add-btn:active { transform: scale(0.97); }
+    .add-btn.added {
+      background: #1A7D3A;
+      animation: addFlash 0.4s ease;
+    }
+
+    .cart-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      backdrop-filter: blur(3px);
+      animation: fadeIn 0.2s ease;
+    }
+    .cart-overlay.open { display: flex; align-items: flex-end; justify-content: center; }
+    @media (min-width: 600px) {
+      .cart-overlay.open { align-items: center; }
+    }
+    .cart-modal {
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      width: 100%;
+      max-width: 480px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+      overflow: hidden;
+    }
+    @media (min-width: 600px) {
+      .cart-modal { border-radius: 20px; }
+    }
+    .cart-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #8B1A1A 100%);
+      color: #fff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .cart-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 99px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .cart-close:hover { background: rgba(255,255,255,0.35); }
+    .cart-items {
+      overflow-y: auto;
+      flex: 1;
+      padding: 16px 24px;
+    }
+    .cart-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+      font-size: 15px;
+    }
+    .cart-empty span { font-size: 48px; display: block; margin-bottom: 12px; }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1.5px solid #F0D8B0;
+      animation: fadeUp 0.3s ease both;
+    }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--dark);
+    }
+    .cart-item-price {
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .cqty-btn {
+      background: #FFF8EE;
+      border: none;
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--primary);
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Nunito', sans-serif;
+    }
+    .cqty-btn:hover { background: var(--primary); color: #fff; }
+    .cqty-num {
+      width: 30px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      border-left: 1.5px solid var(--border);
+      border-right: 1.5px solid var(--border);
+      height: 28px;
+      line-height: 28px;
+      background: #fff;
+    }
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .cart-item-remove:hover { color: var(--primary); }
+    .cart-footer {
+      padding: 20px 24px;
+      border-top: 2px solid #F0D8B0;
+      background: #FFF8EE;
+    }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .cart-total span:first-child {
+      font-size: 14px;
+      font-weight: 700;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cart-total-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+    .checkout-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .checkout-btn:hover {
+      background: #A81F1F;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(214,43,43,0.4);
+    }
+    .clear-btn {
+      width: 100%;
+      background: transparent;
+      color: #aaa;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .clear-btn:hover { color: var(--primary); border-color: var(--primary); }
+
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      right: 24px;
+      background: #1A7D3A;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      z-index: 998;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      max-width: 220px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes bump {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+    @keyframes addFlash {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
- 
-  <nav class="inner-nav">
-    <a href="index.html" target="_parent">Home</a>
-    <a href="product.html" target="_parent">Products</a>
-    <a href="about.html" target="_parent">About Us</a>
-    <a href="contact.html" target="_parent">Contact</a>
-  </nav>
- 
+
   <div class="page-header">
     <h1>Our Menu</h1>
     <p>Fresh snacks at affordable prices — choose what you like.</p>
   </div>
- 
+
   <div class="menu-grid">
- 
-    <div class="card">
+
+    <div class="card" data-name="Classic Burger" data-price="89">
       <div class="card-img-wrap">
         <img src="images/classicburger.png" alt="Classic Burger">
         <span class="badge">Best Seller</span>
@@ -31,13 +385,22 @@
         <h3 class="item-name">Classic Burger</h3>
         <p class="item-desc">Juicy beef patty with lettuce, tomato & ketchup on a sesame bun.</p>
         <div class="card-footer">
-          <span class="price">₱89</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱89</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Cheese Burger" data-price="99">
       <div class="card-img-wrap">
         <img src="images/burger2.jpg" alt="Cheese Burger">
       </div>
@@ -45,13 +408,22 @@
         <h3 class="item-name">Cheese Burger</h3>
         <p class="item-desc">Classic burger topped with melted cheddar cheese for extra flavor.</p>
         <div class="card-footer">
-          <span class="price">₱99</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱99</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Fried Chicken" data-price="109">
       <div class="card-img-wrap">
         <img src="images/friedchicken.jpg" alt="Fried Chicken">
         <span class="badge badge-hot">🔥 Hot</span>
@@ -60,13 +432,22 @@
         <h3 class="item-name">Fried Chicken</h3>
         <p class="item-desc">Crispy golden-fried chicken, seasoned to perfection every time.</p>
         <div class="card-footer">
-          <span class="price">₱109</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱109</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Hotdog Sandwich" data-price="59">
       <div class="card-img-wrap">
         <img src="images/hotdog.jpg" alt="Hotdog Sandwich">
       </div>
@@ -74,13 +455,22 @@
         <h3 class="item-name">Hotdog Sandwich</h3>
         <p class="item-desc">Grilled hotdog in a soft bun with your choice of condiments.</p>
         <div class="card-footer">
-          <span class="price">₱59</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱59</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Regular Fries" data-price="49">
       <div class="card-img-wrap">
         <img src="images/fries.jpg" alt="Regular Fries">
       </div>
@@ -88,13 +478,22 @@
         <h3 class="item-name">Regular Fries</h3>
         <p class="item-desc">Golden crispy fries, lightly salted and served fresh and hot.</p>
         <div class="card-footer">
-          <span class="price">₱49</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱49</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Cheese Fries" data-price="69">
       <div class="card-img-wrap">
         <img src="images/cheesefries.jpg" alt="Cheese Fries">
         <span class="badge">Fan Fave</span>
@@ -103,13 +502,22 @@
         <h3 class="item-name">Cheese Fries</h3>
         <p class="item-desc">Crispy fries generously drizzled with warm, creamy cheese sauce.</p>
         <div class="card-footer">
-          <span class="price">₱69</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱69</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Mini Pizza" data-price="129">
       <div class="card-img-wrap">
         <img src="images/pizza.jpg" alt="Mini Pizza">
         <span class="badge badge-new">New</span>
@@ -118,13 +526,22 @@
         <h3 class="item-name">Mini Pizza</h3>
         <p class="item-desc">Personal-sized pepperoni pizza with gooey mozzarella cheese.</p>
         <div class="card-footer">
-          <span class="price">₱129</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱129</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
-    <div class="card">
+
+    <div class="card" data-name="Clubhouse Sandwich" data-price="119">
       <div class="card-img-wrap">
         <img src="images/sandwich.jpg" alt="Clubhouse Sandwich">
       </div>
@@ -132,14 +549,174 @@
         <h3 class="item-name">Clubhouse Sandwich</h3>
         <p class="item-desc">Triple-decker with turkey, bacon, lettuce, tomato & mayo.</p>
         <div class="card-footer">
-          <span class="price">₱119</span>
-          <button class="add-btn">+ Order</button>
+          <div class="footer-top">
+            <span class="price">₱119</span>
+          </div>
+          <div class="footer-bottom">
+            <div class="qty-controls">
+              <button class="qty-btn minus">−</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn plus">+</button>
+            </div>
+            <button class="add-btn">Order</button>
+          </div>
         </div>
       </div>
     </div>
- 
+
   </div>
- 
+
+  <button class="cart-fab" id="cartFab" onclick="openCart()">
+    🛍️ View Order
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="handleOverlayClick(event)">
+    <div class="cart-modal">
+      <div class="cart-header">
+        <h2>Your Order</h2>
+        <button class="cart-close" onclick="closeCart()">✕</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+          Your order is empty.<br>Add some snacks!
+        </div>
+      </div>
+      <div class="cart-footer" id="cartFooter" style="display:none;">
+        <div class="cart-total">
+          <span>Total</span>
+          <span class="cart-total-price" id="cartTotal">₱0</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">Place Order</button>
+        <button class="clear-btn" onclick="clearCart()">Clear Order</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let cart = {};
+
+    document.querySelectorAll('.card').forEach(card => {
+      const minus  = card.querySelector('.qty-btn.minus');
+      const plus   = card.querySelector('.qty-btn.plus');
+      const display = card.querySelector('.qty-display');
+      const addBtn  = card.querySelector('.add-btn');
+
+      minus.addEventListener('click', () => {
+        let v = parseInt(display.textContent);
+        if (v > 1) display.textContent = v - 1;
+      });
+
+      plus.addEventListener('click', () => {
+        let v = parseInt(display.textContent);
+        if (v < 99) display.textContent = v + 1;
+      });
+
+      addBtn.addEventListener('click', () => {
+        const name  = card.dataset.name;
+        const price = parseInt(card.dataset.price);
+        const qty   = parseInt(display.textContent);
+
+        if (cart[name]) {
+          cart[name].qty += qty;
+        } else {
+          cart[name] = { price, qty };
+        }
+
+        addBtn.classList.add('added');
+        addBtn.textContent = '✓ Added!';
+        setTimeout(() => {
+          addBtn.classList.remove('added');
+          addBtn.textContent = 'Order';
+        }, 1200);
+
+        display.textContent = '1';
+
+        updateCartUI();
+        showToast(`${qty}× ${name} added!`);
+      });
+    });
+
+    function updateCartUI() {
+      const totalItems = Object.values(cart).reduce((s, i) => s + i.qty, 0);
+      const totalPrice = Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0);
+
+      document.getElementById('cartCount').textContent = totalItems;
+
+      const fab = document.getElementById('cartFab');
+      fab.classList.remove('bump');
+      void fab.offsetWidth;
+      fab.classList.add('bump');
+
+      const container = document.getElementById('cartItems');
+      const footer    = document.getElementById('cartFooter');
+
+      if (totalItems === 0) {
+        container.innerHTML = `<div class="cart-empty"><span>🍽️</span>Your order is empty.<br>Add some snacks!</div>`;
+        footer.style.display = 'none';
+        return;
+      }
+
+      footer.style.display = 'block';
+      document.getElementById('cartTotal').textContent = '₱' + totalPrice;
+
+      container.innerHTML = Object.entries(cart).map(([name, {price, qty}]) => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${name}</div>
+            <div class="cart-item-price">₱${price} × ${qty} = ₱${price * qty}</div>
+          </div>
+          <div class="cart-item-qty">
+            <button class="cqty-btn" onclick="changeCartQty('${name}', -1)">−</button>
+            <span class="cqty-num">${qty}</span>
+            <button class="cqty-btn" onclick="changeCartQty('${name}', 1)">+</button>
+          </div>
+          <button class="cart-item-remove" onclick="removeCartItem('${name}')" title="Remove">🗑️</button>
+        </div>
+      `).join('');
+    }
+
+    function changeCartQty(name, delta) {
+      if (!cart[name]) return;
+      cart[name].qty += delta;
+      if (cart[name].qty <= 0) delete cart[name];
+      updateCartUI();
+    }
+
+    function removeCartItem(name) {
+      delete cart[name];
+      updateCartUI();
+    }
+
+    function clearCart() {
+      if (confirm('Clear your entire order?')) {
+        cart = {};
+        updateCartUI();
+      }
+    }
+
+    function checkout() {
+      const totalItems = Object.values(cart).reduce((s, i) => s + i.qty, 0);
+      const totalPrice = Object.values(cart).reduce((s, i) => s + i.qty * i.price, 0);
+      const lines = Object.entries(cart).map(([n, {qty, price}]) => `• ${n} ×${qty} — ₱${qty*price}`).join('\n');
+      alert(`Order Placed!\n\n${lines}\n\n──────────────\nTotal: ₱${totalPrice}\n\nThank you! We'll prepare your order right away. `);
+      cart = {};
+      updateCartUI();
+      closeCart();
+    }
+
+    function openCart()  { document.getElementById('cartOverlay').classList.add('open'); }
+    function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+    function handleOverlayClick(e) { if (e.target === document.getElementById('cartOverlay')) closeCart(); }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = '✓ ' + msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+  </script>
 </body>
 </html>
- 
