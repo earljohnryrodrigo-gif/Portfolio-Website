@@ -1,0 +1,239 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+:root {
+  --primary:  #D62B2B;
+  --accent:   #F5A623;
+  --light-bg: #FDF2E0;
+  --dark:     #1A1A1A;
+  --radius:   14px;
+  --border:   #F0D8B0;
+}
+ 
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--light-bg);
+  color: var(--dark);
+  line-height: 1.6;
+}
+ 
+.inner-nav {
+  background: var(--primary);
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+ 
+.inner-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 24px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+  position: relative;
+}
+ 
+.inner-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; right: 50%;
+  height: 3px;
+  background: var(--accent);
+  transition: left 0.2s, right 0.2s;
+}
+ 
+.inner-nav a:hover::after { left: 0; right: 0; }
+.inner-nav a:hover { background: #A81F1F; color: var(--accent); }
+ 
+.page-header {
+  background: linear-gradient(135deg, var(--primary) 0%, #8B1A1A 100%);
+  color: #fff;
+  text-align: center;
+  padding: 36px 20px 28px;
+}
+ 
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 900;
+  margin: 0;
+}
+ 
+.page-header p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6px;
+}
+ 
+.contact-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+ 
+.map-section {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease both;
+}
+ 
+.map-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+ 
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  animation: fadeUp 0.4s 0.1s ease both;
+}
+ 
+@media (max-width: 768px) {
+  .contact-grid { 
+    grid-template-columns: 1fr; 
+  }
+}
+ 
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+ 
+@media (max-width: 540px) {
+  .info-cards { grid-template-columns: 1fr; }
+}
+ 
+.info-card {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 24px 20px;
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s;
+  cursor: pointer;
+}
+ 
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(214,43,43,0.12);
+}
+ 
+.info-card span {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 12px;
+}
+ 
+.info-card strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+ 
+.info-card p {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+}
+ 
+.form-box {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 32px 28px;
+}
+ 
+.form-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 24px;
+  text-align: center;
+}
+ 
+.form-group {
+  margin-bottom: 20px;
+}
+ 
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+ 
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  color: var(--dark);
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+ 
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(214,43,43,0.12);
+}
+ 
+.form-group textarea {
+  resize: vertical;
+  font-family: 'Nunito', sans-serif;
+}
+ 
+.send-btn {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+ 
+.send-btn:hover {
+  background: #A81F1F;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(214,43,43,0.3);
+}
+ 
+.send-btn:active {
+  transform: scale(0.98);
+}
+ 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
