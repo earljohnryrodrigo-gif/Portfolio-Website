@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    line-height: 1.6;
+}
+
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 2px;
+}
+
+#sumForm {
+    max-width: 500px;
+    margin: 0 auto 40px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 45px;
+    border-radius: 25px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.4s ease;
+}
+
+#sumForm:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #34495e;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.3px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 18px 22px;
+    margin-bottom: 25px;
+    border: 2px solid #ecf0f1;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #ffffff;
+    box-shadow: 
+        0 0 0 4px rgba(52, 152, 219, 0.1),
+        0 8px 25px rgba(52, 152, 219, 0.15);
+    transform: translateY(-2px);
+}
+
+button {
+    width: 48%;
+    padding: 16px 24px;
+    margin: 8px 1%;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button[type="button"] {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+button[type="button"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(52, 152, 219, 0.4);
+}
+
+button[type="reset"] {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+}
+
+button[type="reset"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(231, 76, 60, 0.4);
+}
+
+#sum {
+    max-width: 500px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 
+        0 15px 45px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-left: 5px solid #3498db;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #2c3e50;
+    transition: all 0.4s ease;
+}
+
+#sum:empty {
+    display: none;
+}
+
+#sum br {
+    display: block;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 20px 15px;
+    }
+    
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    
+    #sumForm {
+        padding: 30px 25px;
+        margin-bottom: 30px;
+    }
+    
+    button {
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    #sum {
+        padding: 25px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    input[type="text"] {
+        padding: 16px 18px;
+        font-size: 1.1rem;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#sumForm {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+#sum {
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+}

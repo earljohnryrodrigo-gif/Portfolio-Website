@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity 4 - Blue & Orange Theme</title>
+</head>
+<body style="font-family: Arial, sans-serif; display: flex; justify-content: center; padding-top: 50px; background-color: #f0f4f8;">
+
+    <div style="border: 3px solid #004080; padding: 30px; border-radius: 15px; background-color: #ffffff; box-shadow: 5px 5px 15px rgba(0,0,0,0.1); width: 450px;">
+        
+        <h2 style="color: #004080; text-align: center; margin-top: 0; border-bottom: 2px solid #ffa500; padding-bottom: 10px;">
+            User Information Form
+        </h2>
+
+        <form action="" method="post">
+            <table style="width: 100%; border-spacing: 0 10px;">
+                <tr>
+                    <td style="color: #004080; font-weight: bold; width: 120px;"><label for="fname">First Name:</label></td>
+                    <td><input type="text" id="fname" name="firstname" required style="width: 90%; border: 1px solid #004080; border-radius: 4px; padding: 5px;"></td>
+                </tr>
+
+                <tr>
+                    <td style="color: #004080; font-weight: bold;"><label for="lname">Last Name:</label></td>
+                    <td><input type="text" id="lname" name="lastname" required style="width: 90%; border: 1px solid #004080; border-radius: 4px; padding: 5px;"></td>
+                </tr>
+
+                <tr>
+                    <td style="color: #004080; font-weight: bold;"><label for="age">Age:</label></td>
+                    <td><input type="number" id="age" name="age" style="width: 50px; border: 1px solid #004080; border-radius: 4px; padding: 5px;"></td>
+                </tr>
+
+                <tr>
+                    <td style="color: #004080; font-weight: bold; vertical-align: top;">Gender:</td>
+                    <td style="color: #333;">
+                        <input type="radio" id="male" name="gender" value="male"> <label for="male">Male</label><br>
+                        <input type="radio" id="female" name="gender" value="female"> <label for="female">Female</label><br>
+                        <input type="radio" id="other" name="gender" value="other"> <label for="other">Other</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="color: #ffa500; font-weight: bold; vertical-align: top;">Hobbies:</td>
+                    <td style="color: #ffa500; background-color: #fff9f0; padding: 10px; border-radius: 8px;">
+                        <input type="checkbox" id="hobby1" name="hobby" value="Watching Movies"> <label for="hobby1">Watching Movies</label><br>
+                        <input type="checkbox" id="hobby2" name="hobby" value="Playing Chess"> <label for="hobby2">Playing Chess</label><br>
+                        <input type="checkbox" id="hobby3" name="hobby" value="Online Games"> <label for="hobby3">Online Games</label><br>
+                        <input type="checkbox" id="hobby4" name="hobby" value="Cooking"> <label for="hobby4">Cooking</label><br>
+                        <input type="checkbox" id="hobby5" name="hobby" value="Sports"> <label for="hobby5">Sports</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="color: #004080; font-weight: bold;"><label for="year-level">Year Level:</label></td>
+                    <td>
+                        <select id="year-level" name="year_level" style="padding: 5px; border: 1px solid #004080; border-radius: 4px;">
+                            <option value="1st-year">1st Year</option>
+                            <option value="2nd-year">2nd Year</option>
+                            <option value="3rd-year">3rd Year</option>
+                            <option value="4th-year">4th Year</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td style="padding-top: 20px;">
+                        <button type="submit" style="background-color: #ffa500; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Submit</button>
+                        <button type="reset" style="background-color: #004080; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 10px;">Clear</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</body>
+</html>
